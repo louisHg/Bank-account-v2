@@ -1,0 +1,67 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01_create_search_multicritere_transaction
+      context: nominal
+      comment: Ajout d'un champ recherche
+      author: lhuyghe
+      dbms: "!h2"
+      changes:
+        - modifyDataType:
+            tableName: transactions
+            columnName: transactions_recherche
+            newDataType: varchar(10000)
+        - sql:
+            sql : CREATE OR REPLACE FUNCTION public.unaccent(character varying)
+              RETURNS character varying
+              LANGUAGE plpgsql
+              AS '
+              DECLARE
+              p_str    alias for $1;
+              v_str    varchar;
+              BEGIN
+              select translate(p_str, ''ÀÁÂÃÄÅ'', ''AAAAAA'') into v_str;
+              select translate(v_str, ''ÉÈËÊ'', ''EEEE'') into v_str;
+              select translate(v_str, ''ÌÍÎÏ'', ''IIII'') into v_str;
+              select translate(v_str, ''ÌÍÎÏ'', ''IIII'') into v_str;
+              select translate(v_str, ''ÒÓÔÕÖ'', ''OOOOO'') into v_str;
+              select translate(v_str, ''ÙÚÛÜ'', ''UUUU'') into v_str;
+              select translate(v_str, ''àáâãäå'', ''aaaaaa'') into v_str;
+              select translate(v_str, ''èéêë'', ''eeee'') into v_str;
+              select translate(v_str, ''ìíîï'', ''iiii'') into v_str;
+              select translate(v_str, ''òóôõö'', ''ooooo'') into v_str;
+              select translate(v_str, ''ùúûü'', ''uuuu'') into v_str;
+              select translate(v_str, ''Çç'', ''Cc'') into v_str;
+              return v_str;
+              END;';
+        # Declaration of triggers and functions
+        # Concatenation function in the search field when adding information
+        - sql:
+            sql: CREATE OR REPLACE FUNCTION public.update_transactions_recherche_trigger()
+              RETURNS TRIGGER
+              LANGUAGE plpgsql
+              AS '
+              BEGIN
+              NEW.transactions_recherche =
+              coalesce(lower(unaccent(trim(NEW.transactions_message))),'''') ||''|''||
+              coalesce(lower(unaccent(trim(NEW.transactions_amount::text))),'''') ||''|''||
+              coalesce(lower(unaccent(trim(NEW.creation_date::text))),'''') ||''|''||
+              coalesce((SELECT lower(unaccent(trim(user_name))) FROM users WHERE user_id = NEW.transactions_user_id),'''') ||''|''||
+              coalesce((SELECT lower(unaccent(trim(user_first_name))) FROM users WHERE user_id = NEW.transactions_user_id),'''') ||''|''||
+              coalesce((SELECT lower(unaccent(trim(user_email))) FROM users WHERE user_id = NEW.transactions_user_id),'''') ||''|''||
+              coalesce((SELECT lower(unaccent(trim(user_account_balance::text))) FROM users WHERE user_id = NEW.transactions_user_id),'''');
+              RETURN NEW;
+              END;';
+
+        # Trigger activating the function to fill the search field with each transaction insert
+        - sql:
+            sql: CREATE TRIGGER update_transactions_recherche_trigger_before_insert
+              BEFORE INSERT
+              ON public.transactions
+              FOR EACH ROW EXECUTE PROCEDURE update_transactions_recherche_trigger()
+
+        # Trigger activating the function to fill the search field with each transaction update
+        - sql:
+            sql: CREATE TRIGGER update_transactions_recherche_trigger_before_update
+              BEFORE UPDATE
+              ON public.transactions
+              FOR EACH ROW EXECUTE PROCEDURE update_transactions_recherche_trigger()

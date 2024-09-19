@@ -1,0 +1,73 @@
+// app global css in SCSS form
+.item-menu {
+  color: var(--q-dark);
+}
+.item-menu.q-router-link--active {
+  border-right: 0.5vh solid;
+  border-color: #e0cd1e;
+
+  color: var(--q-primary);
+  background: var(--q-secondary);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.not-allowed {
+  cursor: not-allowed;
+}
+
+.center {
+  text-align: center;
+}
+
+// Index page
+.remove-points {
+  list-style-type: none; /* Remove default list styles */
+  padding-left: 0; /* Remove default padding */
+}
+
+.animated-text {
+  display: inline-block;
+  overflow: hidden; /* Ensure text overflow is hidden during animation */
+  white-space: nowrap; /* Prevent wrapping of text during animation */
+  animation: slideIn 3s ease-in-out infinite alternate;
+  font-size: 25px;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.rounded-circle {
+  border-radius: 50%;
+  height: 200px;
+  width: 180px;
+  object-fit: cover; /* Ensures the image covers the entire space */
+}
+
+// UsersPage
+
+.custom-card {
+  max-width: none !important;
+  width: auto;
+  height: auto;
+  border-radius: 1vh;
+}
+
+.deposite-money-card {
+  max-width: none !important;
+  width: 30vw;
+  height: auto;
+  border-radius: 1vh;
+}

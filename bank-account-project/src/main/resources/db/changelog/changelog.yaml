@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/01_create_search_multicritere_transaction.yaml
+  - include:
+      file: db/changelog/02_create_search_multicritere_user.yaml

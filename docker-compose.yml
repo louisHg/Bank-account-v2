@@ -1,0 +1,51 @@
+version: "1"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: bank_database
+    environment:
+      POSTGRES_DB: bank_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "8278:5432"
+    volumes:
+      - ./database/dump_bank_account.sql:/docker-entrypoint-initdb.d/dump_bank_account.sql
+    networks:
+      - spring-bank-network
+    restart: always
+  
+  bankaccountapi:
+    container_name: bankaccountapi
+    build:
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/bank_database
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - spring-bank-network
+    ports:
+      - "8080:8080"
+    restart: always
+
+  webapp:
+    container_name: webapp
+    build:
+      context: ./web-app
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - bankaccountapi
+    networks:
+      - spring-bank-network
+    ports:
+      - "9000:9000"
+    restart: always
+
+
+networks:
+  spring-bank-network:

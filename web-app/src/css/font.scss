@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "montserrat-bold";
+  src: url("../assets/fonts/Montserrat-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "montserrat-extraBold";
+  src: url("../assets/fonts/Montserrat-ExtraBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "montserrat-regular";
+  src: url("../assets/fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+* {
+  font-family: montserrat-regular;
+  font-size: 12px;
+}
+
+.extra-bold {
+  font-family: montserrat-extraBold;
+}
+
+.bold {
+  font-family: montserrat-bold;
+}
+
+.titre {
+  font-size: 25px;
+}
+
+.sous-titre {
+  font-size: 20px;
+}
+
+.accentue {
+  font-size: 15px;
+}
+
+.q-table tbody td {
+  font-size: 10px;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.home {
+  font-size: 18px;
+}
+
+.basique {
+  font-size: 10px;
+}
+
+.red {
+  color: var(--q-red);
+}
