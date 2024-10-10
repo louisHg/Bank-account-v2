@@ -1,0 +1,21 @@
+<div class="notification-container">
+  <div
+    *ngFor="let notification of notifications"
+    class="notification"
+    [ngClass]="notification.type"
+    [style.background]="notification.color"
+  >
+    <span>{{ notification.message }}</span>
+    <div *ngIf="notification.actions">
+      <button
+        *ngFor="let action of notification.actions"
+        [ngStyle]="{ color: action.color }"
+        [class.round]="action.round"
+        (click)="handleAction(notification, action)"
+      >
+        <i class="material-icons">{{ action.icon }}</i>
+      </button>
+    </div>
+    <div *ngIf="notification.progress" class="progress-bar"></div>
+  </div>
+</div>
