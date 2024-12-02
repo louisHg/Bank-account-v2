@@ -1,12 +1,25 @@
 mat-toolbar {
   display: flex;
-  justify-content: center; // Centers content horizontally
-  align-items: center; // Centers content vertically
-  position: relative; // Ensures child elements can be positioned correctly
+  justify-content: space-between;
+  align-items: center;
 }
 
-h1 {
+mat-sidenav-container {
+  height: 100vh;
+}
+
+mat-sidenav {
+  width: 250px; /* Adjust as needed */
+}
+
+mat-sidenav-content {
+  padding: 16px;
+}
+
+
+.org-titre {
   margin: 0; // Removes default margin
   flex: 1; // Allows the title to take available space
   text-align: center; // Centers the text inside the h1
+  cursor: pointer;
 }
