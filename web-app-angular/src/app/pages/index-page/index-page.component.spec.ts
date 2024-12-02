@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { IndexPageComponent } from './index-page.component';
 
 describe('IndexPageComponent', () => {
@@ -8,10 +7,11 @@ describe('IndexPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [IndexPageComponent]
-    })
-    .compileComponents();
+      declarations: [IndexPageComponent],
+    }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(IndexPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

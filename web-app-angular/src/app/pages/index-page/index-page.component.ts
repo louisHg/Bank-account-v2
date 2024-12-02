@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-index-page',
-  standalone: true,
-  imports: [],
   templateUrl: './index-page.component.html',
-  styleUrl: './index-page.component.scss'
+  styleUrls: ['./index-page.component.scss']
 })
 export class IndexPageComponent {
-
+  githubImage:any = "assets/github.svg";  
+  linkedInImage:any = "assets/linkedin.svg";
+  bankImage:any = "assets/bank-svgrepo-com.svg";
 }
